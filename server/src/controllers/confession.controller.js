@@ -22,6 +22,22 @@ export const createConfession = AsyncHandler(async (req, res) => {
 
   return res.status(201).json(new ApiResponse(201, "Confession created successfully", newConfession));
 });
+export const createAnonymousConfession = AsyncHandler(async (req, res) => {
+  const { text} = req.body;
+ 
+  if (!text) {
+    throw new ApiError(400, "Confession text is required.");
+  }
+
+ 
+
+  const newConfession = await Confession.create({
+    Text:text,
+    Owner: "anonymous",
+  });
+
+  return res.status(201).json(new ApiResponse(201, "Anonymous confession created successfully", newConfession));
+});
 
 
 // 1. Get all confessions
@@ -76,15 +92,7 @@ export const deleteConfession = AsyncHandler(async (req, res) => {
 
   await confession.deleteOne();
 
-  res.status(200).json(new ApiResponse(200, "Confession deleted successfully"));
+  res.status(200).json(new ApiResponse(200, "Confession deleted successfully",{}));
 });
 
 
-export {
-  createConfession,
-  getConfessionById,
-  getConfessionsByUser,
-  getAllConfessions,
-  updateConfession,
-  deleteConfession,
-};

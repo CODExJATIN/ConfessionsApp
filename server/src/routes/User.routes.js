@@ -7,8 +7,8 @@ import {
   Update_Password,
   Update_Account_Details,
   Current_User,
-} from "../controllers/User.controller"
-import { VerifyJwt } from "../middlewares/Auth.middlewares";
+} from "../controllers/User.controller.js"
+import { VerifyJwt } from "../middlewares/Auth.middlewares.js";
 
 const userRouter = express.Router();
 

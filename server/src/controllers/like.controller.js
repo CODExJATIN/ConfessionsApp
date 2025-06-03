@@ -62,11 +62,3 @@ export const getUsersWhoLikedConfession = AsyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, "Users who liked fetched", likes.map(like => like.LikedBy)));
 });
 
-export {
-  likeConfession,
-  unlikeConfession,
-  getLikesCount,
-  getLikesByUser,
-  isConfessionLikedByUser,
-  getUsersWhoLikedConfession,
-};

@@ -13,7 +13,7 @@ const GenerateAccessAndRefreshTokens = async function (user_id) {
     }
 
     // Generate the access and refresh tokens for the user
-    const Acces_Token = await user.generateAccessToken();
+    const Access_Token = await user.generateAccessToken();
     const Refresh_Token = await user.generateRefreshToken();
 
     // Save the refresh token in the user's document
@@ -21,9 +21,10 @@ const GenerateAccessAndRefreshTokens = async function (user_id) {
 
     // Save the updated user document without validating the fields (for efficiency)
     await user.save({ validateBeforeSave: false });
+    
 
     // Return both the generated tokens
-    return { Acces_Token, Refresh_Token };
+    return { Access_Token, Refresh_Token };
 
   } catch (error) {
     // Catch any error that occurs and log it

@@ -57,14 +57,14 @@ const User_registeration = AsyncHandler(async function (req, res) {
     // Send a successful response with the created user details
     return res
       .status(201)
-      .json(new ApiResponse(201, createdUser, "User Registered successfully"));
+      .json(new ApiResponse(201,  "User Registered successfully",createdUser,));
   } catch (error) {
     // Log the error and handle cleanup if user creation fails
     console.log("user creation failed", error);
 
     throw new ApiError(
       500,
-      "something went wrong user was not created and images were deleted from cloudinary",
+      "something went wrong user was not created",
     );
   }
 });
@@ -84,7 +84,7 @@ const User_login = AsyncHandler(async function (req, res) {
     }
 
     // Find user by username or email
-    const user = await User.findOne({ $or: [{ username }, { email }] });
+    const user = await User.findOne({ $or: [{ Username:username }, { Email:email }] });
     if (!user) {
       throw new ApiError(404, "User not found, incorrect username or email");
     }
@@ -122,12 +122,12 @@ const User_login = AsyncHandler(async function (req, res) {
       .json(
         new ApiResponse(
           201,
-          {
+          "User logged in successfully",
+           {
             User: Logged_In_User,
-            Acces_Token,
+            Access_Token,
             Refresh_Token,
           },
-          "User logged in successfully",
         ),
       );
   } catch (error) {
@@ -189,6 +189,7 @@ const RefreshAccessToken = AsyncHandler(async function (req, res) {
     };
 
     // Respond with new tokens set in cookies and send a success message
+    
     return res
       .status(201)
       .cookie("Access_Token", Access_Token, options)
@@ -196,12 +197,12 @@ const RefreshAccessToken = AsyncHandler(async function (req, res) {
       .json(
         new ApiResponse(
           201,
-          {
-            User: user, // Return user details (you can customize this)
+          "Tokens refreshed successfully", 
+           {
+            User: user, 
             Access_Token,
             Refresh_Token: New_Refresh_Token,
           },
-          "Tokens refreshed successfully", // Success message
         ),
       );
   } catch (error) {
@@ -246,8 +247,8 @@ const Log_Out_User = AsyncHandler(async function (req, res) {
       .json(
         new ApiResponse(
           201,
-          {}, // No data is returned
-          "User logged out successfully", // Success message
+          "User logged out successfully", 
+          {}
         ),
       );
   } catch (error) {
@@ -274,7 +275,7 @@ const Update_Password = AsyncHandler(async function (req, res) {
 
     await user.save({ validateBeforeSave: false });
 
-    return res.status(200).json(new ApiResponse(200, {}, "Password updated"));
+    return res.status(200).json(new ApiResponse(200,  "Password updated",{}));
   } catch (error) {
     console.error("error while updating password", error);
     throw new ApiError(
@@ -285,7 +286,7 @@ const Update_Password = AsyncHandler(async function (req, res) {
 });
 
 const Current_User = AsyncHandler(async function (req, res) {
-  return res.status(200).json(new ApiResponse(200, req.user, "current user"));
+  return res.status(200).json(new ApiResponse(200,  "current user",req.user));
 });
 
 const Update_Account_Details = AsyncHandler(async function (req, res) {
@@ -328,7 +329,7 @@ const Update_Account_Details = AsyncHandler(async function (req, res) {
     return res
       .status(200)
       .json(
-       new ApiResponse(200, savedUser, "Account details updated successfully"),
+       new ApiResponse(200, "Account details updated successfully", savedUser),
       );
   } catch (error) {
     console.error("error while updating account details", error);

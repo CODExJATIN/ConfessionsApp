@@ -7,8 +7,7 @@ import {
   isConfessionLikedByUser,
   getUsersWhoLikedConfession,
 } from "../controllers/like.controller.js";
-import { VerifyJwt } from "../middlewares/Auth.middlewares";
-
+import { VerifyJwt } from "../middlewares/Auth.middlewares.js";
 const likeRouter = express.Router();
 
 likeRouter.post("/:id/like", VerifyJwt, likeConfession);

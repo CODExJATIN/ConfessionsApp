@@ -1,11 +1,11 @@
 import express from "express";
-import { VerifyJwt } from "../middlewares/Auth.middlewares";
+import { VerifyJwt } from "../middlewares/Auth.middlewares.js";
 import {
   createComment,
   getCommentsByConfession,
   updateComment,
   deleteComment,
-} from "../controllers/comments.controller.js";
+} from "../controllers/comment.controller.js";
 
 const commentRouter = express.Router();
 

@@ -64,12 +64,6 @@ export const deleteComment = AsyncHandler(async (req, res) => {
     throw new ApiError(404, "Comment not found or unauthorized");
   }
 
-  res.status(200).json(new ApiResponse(200, "Comment deleted"));
+  res.status(200).json(new ApiResponse(200, "Comment deleted",{}));
 });
 
-export {
-  createComment,
-  getCommentsByConfession,
-  updateComment,
-  deleteComment,
-};
