@@ -7,23 +7,21 @@ import { motion } from 'framer-motion';
 import { getTagIcon } from '../../data/mockData';
 import { colleges } from '../../data/mockData';
 
-
-
-const ConfessionCard = ({
-  confession,
-  onCommentClick,
-}) => {
+const ConfessionCard = ({ confession, onCommentClick }) => {
   const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(confession.likes);
+  const [likeCount, setLikeCount] = useState(confession.Likes?.length || 0);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const college = colleges.find(c => c.id === confession.collegeId);
+  // Find college by matching college ID string in confession.college
+  const college = colleges.find((c) => c.id === confession.college);
 
   const toggleLike = () => {
     if (isLiked) {
-      setLikeCount((prev) => prev - 1);
+      setLikeCount((prev) => Math.max(prev - 1, 0));
+      // Optionally remove current user ID from Likes array here if integrated
     } else {
       setLikeCount((prev) => prev + 1);
+      // Optionally add current user ID to Likes array here if integrated
     }
     setIsLiked((prev) => !prev);
   };
@@ -41,7 +39,7 @@ const ConfessionCard = ({
     >
       <div className="flex items-center mb-3">
         <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden mr-3">
-          {confession.author.avatar ? (
+          {confession.author?.avatar ? (
             <img
               src={confession.author.avatar}
               alt={confession.author.handle || 'Anonymous'}
@@ -53,9 +51,9 @@ const ConfessionCard = ({
         </div>
         <div className="flex-grow">
           <p className="font-medium">
-            {confession.author.isAnonymous
-              ? 'Anonymous'
-              : `@${confession.author.handle}`}
+            {confession.owner
+              ? `@${confession.ownner.Username}`
+              : 'Anonymous' }
           </p>
           <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
             <time className="mr-2">
@@ -69,7 +67,7 @@ const ConfessionCard = ({
             {college && (
               <>
                 <span className="mx-2">•</span>
-                <Link 
+                <Link
                   to={`/college/${college.id}`}
                   className="flex items-center hover:text-primary-500 transition-colors"
                 >
@@ -101,7 +99,7 @@ const ConfessionCard = ({
         )}
       </div>
 
-      {confession.tags.length > 0 && (
+      {confession.tags && confession.tags.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-4">
           {confession.tags.map((tag) => {
             const TagIcon = getTagIcon(tag);
@@ -146,13 +144,14 @@ const ConfessionCard = ({
           className="text-gray-600 dark:text-gray-400"
         >
           <MessageCircle size={18} className="mr-1" />
-          {confession.comments}
+          {confession.Comments?.length || 0}
         </Button>
 
         <Button
           variant="ghost"
           size="sm"
           className="text-gray-600 dark:text-gray-400"
+          aria-label="Report confession"
         >
           <Flag size={18} />
         </Button>

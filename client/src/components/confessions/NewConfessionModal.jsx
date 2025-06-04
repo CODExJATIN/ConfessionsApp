@@ -11,6 +11,7 @@ const NewConfessionModal = ({
   isOpen,
   onClose,
   collegeId,
+  setConfessions
 }) => {
   const [confessionText, setConfessionText] = useState('');
   const [selectedTags, setSelectedTags] = useState([]);
@@ -39,7 +40,7 @@ const NewConfessionModal = ({
     try {
       const body = {
         text: confessionText.trim(),
-        college: collegeId,
+        collegeName: collegeId,
         tags: selectedTags,
       };
 
@@ -71,6 +72,8 @@ const NewConfessionModal = ({
 
       const confession = response.data.data;
       console.log('Confession posted successfully:', confession);
+
+      setConfessions((prev) => [confession, ...prev]); // Update confessions list
 
       // Success - reset form
       setConfessionText('');

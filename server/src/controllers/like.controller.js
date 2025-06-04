@@ -2,6 +2,7 @@ import { Like } from "../models/likes.model.js";
 import { AsyncHandler } from "../utils/asyncHandler.js"; 
 import { ApiResponse } from "../utils/apiResponse.js";
 import { ApiError } from "../utils/apiError.js"; 
+import { Confession } from "../models/confession.model.js";
 
 // Like a confession
 export const likeConfession = AsyncHandler(async (req, res) => {
@@ -15,6 +16,10 @@ export const likeConfession = AsyncHandler(async (req, res) => {
   }
 
   const like = await Like.create({ LikedBy: userId, Confession: confessionId });
+  // Update the confession's likes count
+  await Confession.findByIdAndUpdate(confessionId, {
+    $push: { Likes: like._id },
+  }, { new: true, useFindAndModify: false });
   res.status(201).json(new ApiResponse(201, "Confession liked successfully", like));
 });
 
@@ -29,6 +34,10 @@ export const unlikeConfession = AsyncHandler(async (req, res) => {
   }
 
   await Like.deleteOne({ LikedBy: userId, Confession: confessionId });
+  // Update the confession's likes count
+  await Confession.findByIdAndUpdate(confessionId, {
+    $pull: { Likes: like._id },
+  }, { new: true, useFindAndModify: false });
 
   res.status(200).json(new ApiResponse(200, "Confession unliked successfully"));
 });
