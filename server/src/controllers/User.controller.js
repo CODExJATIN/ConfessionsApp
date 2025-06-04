@@ -76,17 +76,17 @@ const User_login = AsyncHandler(async function (req, res) {
       throw new ApiError(400, "Request body cannot be empty");
     }
 
-    const { username, email, password } = req.body;
+    const { username, password } = req.body;
 
     // Check if any field is empty
-    if ([username, email, password].some((fields) => fields?.trim() === "")) {
+    if ([username, password].some((fields) => fields?.trim() === "")) {
       throw new ApiError(401, "All fields are required");
     }
 
-    // Find user by username or email
-    const user = await User.findOne({ $or: [{ Username:username }, { Email:email }] });
+    // Find user by email
+    const user = await User.findOne({ Username: username });
     if (!user) {
-      throw new ApiError(404, "User not found, incorrect username or email");
+      throw new ApiError(404, "User not found, incorrect username");
     }
 
     // Check if the password is correct
