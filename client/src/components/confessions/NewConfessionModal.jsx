@@ -3,6 +3,7 @@ import { Button } from '../ui/button';
 import { X, Tag as TagIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../utils/cn';
+import axios from 'axios';
 
 const popularTags = ['crush', 'tech', 'hostel', 'food', 'professor', 'exam', 'fail', 'success', 'funny', 'rant'];
 
@@ -28,19 +29,58 @@ const NewConfessionModal = ({
       }
     }
   };
-  
-  const handleSubmit = (e) => {
+
+    const handleSubmit = async (e) => {
     e.preventDefault();
-    if (confessionText.trim()) {
-      setIsSubmitting(true);
-      
-      setTimeout(() => {
-        setConfessionText('');
-        setSelectedTags([]);
-        setIsAnonymous(true);
-        setIsSubmitting(false);
-        onClose();
-      }, 1000);
+    if (!confessionText.trim()) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const body = {
+        text: confessionText.trim(),
+        college: collegeId,
+        tags: selectedTags,
+      };
+
+      const url = isAnonymous
+        ? '/confession-routes/createAnonymousConfession'
+        : '/confession-routes/createConfession';
+
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+
+      if (!isAnonymous) {
+        // Add Authorization header if authenticated
+        // Assuming you store JWT token in localStorage or context
+        const token = localStorage.getItem('token'); 
+        if (!token) {
+          alert("You must be logged in to post a confession with your ID!");
+          setIsSubmitting(false);
+          return;
+        }
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const response = await axios.post(import.meta.env.VITE_BASE_URL + url, body, { headers });
+      // Handle response
+      if (!response || !response.data) {
+        throw new Error('No response from server');
+      }
+
+      const confession = response.data.data;
+      console.log('Confession posted successfully:', confession);
+
+      // Success - reset form
+      setConfessionText('');
+      setSelectedTags([]);
+      setIsAnonymous(true);
+      onClose();
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setIsSubmitting(false);
     }
   };
   

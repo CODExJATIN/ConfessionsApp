@@ -6,6 +6,7 @@ import CollegePage from './pages/CollegePage';
 import AboutPage from './pages/AboutPage';
 import TrendingPage from './pages/TrendingPage';
 import NewPage from './pages/NewPage';
+import AuthPage from './pages/AuthPage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/trending" element={<TrendingPage />} />
           <Route path="/new" element={<NewPage />} />
+          <Route path="/auth" element={<AuthPage />} />
         </Routes>
       </Router>
     </ThemeProvider>

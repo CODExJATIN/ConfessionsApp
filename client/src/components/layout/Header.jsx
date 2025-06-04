@@ -84,6 +84,8 @@ const Header = () => {
             variant="primary"
             size="sm"
             className="hidden sm:flex"
+            onClick={()=> window.location.href = '/auth'
+            }
           >
             Log In
           </Button>

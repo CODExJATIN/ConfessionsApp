@@ -6,12 +6,13 @@ import {
   getConfessionsByUser,
   updateConfession,
   deleteConfession,
+  createAnonymousConfession,
 } from "../controllers/confession.controller.js";
 import { VerifyJwt } from "../middlewares/Auth.middlewares.js";
 const confessionRouter = express.Router();
 
-confessionRouter.post("/createConfession", createConfession);
-confessionRouter.post("/createAnonymousConfession", createConfession);
+confessionRouter.post("/createConfession", VerifyJwt, createConfession);
+confessionRouter.post("/createAnonymousConfession", createAnonymousConfession);
 confessionRouter.get("/", getAllConfessions);
 confessionRouter.get("/:id", getConfessionById);
 confessionRouter.get("/user/:userId", getConfessionsByUser);

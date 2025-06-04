@@ -10,7 +10,7 @@ import commentRouter from './routes/comment.routes.js';
 const app = express();
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,  
+    origin: "http://localhost:5173", // Update with your frontend URL
     credentials: true,              
   }),
 );
