@@ -27,7 +27,7 @@ const User_registeration = AsyncHandler(async function (req, res) {
 
     // Check if a user with the same username or email already exists
     const ExistingUser = await User.findOne({
-      $or: [{ username }, { email }],
+      $or: [{ username: username.toLowerCase() }, { email: email.toLowerCase() }],
     });
     if (ExistingUser) {
       throw new ApiError(
@@ -61,6 +61,13 @@ const User_registeration = AsyncHandler(async function (req, res) {
   } catch (error) {
     // Log the error and handle cleanup if user creation fails
     console.log("user creation failed", error);
+
+        // Handle MongoDB duplicate key error
+    if (error.code === 11000) {
+      const duplicateField = Object.keys(error.keyPattern)[0];
+      const message = `A user with this ${duplicateField} already exists`;
+      return res.status(409).json(new ApiResponse(409, message));
+    }
 
     throw new ApiError(
       500,

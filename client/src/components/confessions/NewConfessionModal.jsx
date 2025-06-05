@@ -4,6 +4,7 @@ import { X, Tag as TagIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../utils/cn';
 import axios from 'axios';
+import { useUser } from '../../store/useUser';
 
 const popularTags = ['crush', 'tech', 'hostel', 'food', 'professor', 'exam', 'fail', 'success', 'funny', 'rant'];
 
@@ -17,6 +18,7 @@ const NewConfessionModal = ({
   const [selectedTags, setSelectedTags] = useState([]);
   const [isAnonymous, setIsAnonymous] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const user = useUser((state) => state.user);
   
   const maxCharCount = 280;
   const charactersLeft = maxCharCount - confessionText.length;
@@ -172,15 +174,15 @@ const NewConfessionModal = ({
                     />
                     <span>Anonymous</span>
                   </label>
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      checked={!isAnonymous}
-                      onChange={() => setIsAnonymous(false)}
-                      className="mr-2 h-4 w-4 text-primary-500"
-                    />
-                    <span>@yourhandle</span>
-                  </label>
+                {user.username!="" && <label className="flex items-center">
+                  <input
+                    type="radio"
+                    checked={!isAnonymous}
+                    onChange={() => setIsAnonymous(false)}
+                    className="mr-2 h-4 w-4 text-primary-500"
+                  />
+                  <span>@{user.username}</span>
+                </label>}
                 </div>
               </div>
               

@@ -118,7 +118,7 @@ const CommentsDrawer = ({
               )}
             </div>
             
-            <div className="p-4 border-t border-gray-200 dark:border-gray-800">
+            <div className="p-4 mb-20 border-t border-gray-200 dark:border-gray-800">
               {isLoggedIn ? (
                 <form onSubmit={handleSubmit} className="flex items-center">
                   <input

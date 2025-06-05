@@ -6,52 +6,85 @@ export const colleges: College[] = [
   {
     id: 'ldce',
     name: 'LD College of Engineering',
-    logo: 'https://images.pexels.com/photos/356079/pexels-photo-356079.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    logo: 'https://miro.medium.com/v2/resize:fit:3200/1*lAAex5vgV0ptPfdJopy12A.jpeg',
     location: 'Ahmedabad, Gujarat',
-    bannerImage: 'https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    confessionCount: 142
+    bannerImage: 'https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg',
+    confessionCount: 142,
   },
   {
-    id: 'iitb',
-    name: 'IIT Bombay',
-    logo: 'https://images.pexels.com/photos/5940841/pexels-photo-5940841.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    location: 'Mumbai, Maharashtra',
-    bannerImage: 'https://images.pexels.com/photos/159490/yale-university-landscape-colleges-159490.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    confessionCount: 287
+    id: 'sal',
+    name: 'SAL Institute of Technology & Engineering',
+    logo: 'https://www.admissionwala.in/storage/productimages/seti_home-1.png',
+    location: 'Ahmedabad, Gujarat',
+    bannerImage: 'https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg',
+    confessionCount: 87,
   },
+  // {
+  //   id: 'nirma',
+  //   name: 'Nirma University',
+  //   logo: 'https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg',
+  //   location: 'Ahmedabad, Gujarat',
+  //   bannerImage: 'https://images.pexels.com/photos/374074/pexels-photo-374074.jpeg',
+  //   confessionCount: 198,
+  // },
   {
-    id: 'nitc',
-    name: 'NIT Calicut',
-    logo: 'https://images.pexels.com/photos/159699/books-book-pages-story-literature-159699.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    location: 'Kozhikode, Kerala',
-    bannerImage: 'https://images.pexels.com/photos/159490/yale-university-landscape-colleges-159490.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    confessionCount: 176
+    id: 'gu',
+    name: 'Gujarat University',
+    logo: 'https://static.gujaratsamachar.com/content_image/content_image_1bb6eadc-d08a-4631-9fcb-3dab6716e149.jpeg',
+    location: 'Ahmedabad, Gujarat',
+    bannerImage: 'https://images.pexels.com/photos/356079/pexels-photo-356079.jpeg',
+    confessionCount: 156,
   },
-  {
-    id: 'du',
-    name: 'Delhi University',
-    logo: 'https://images.pexels.com/photos/256520/pexels-photo-256520.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    location: 'Delhi',
-    bannerImage: 'https://images.pexels.com/photos/159490/yale-university-landscape-colleges-159490.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    confessionCount: 312
-  },
-  {
-    id: 'iitm',
-    name: 'IIT Madras',
-    logo: 'https://images.pexels.com/photos/2170/creative-desk-pens-school.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    location: 'Chennai, Tamil Nadu',
-    bannerImage: 'https://images.pexels.com/photos/159490/yale-university-landscape-colleges-159490.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    confessionCount: 245
-  },
-  {
-    id: 'bit',
-    name: 'Birla Institute of Technology',
-    logo: 'https://images.pexels.com/photos/34592/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    location: 'Ranchi, Jharkhand',
-    bannerImage: 'https://images.pexels.com/photos/159490/yale-university-landscape-colleges-159490.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    confessionCount: 132
-  },
+  // {
+  //   id: 'daiict',
+  //   name: 'Dhirubhai Ambani Institute of Information and Communication Technology',
+  //   logo: 'https://images.pexels.com/photos/1181396/pexels-photo-1181396.jpeg',
+  //   location: 'Gandhinagar (near Ahmedabad), Gujarat',
+  //   bannerImage: 'https://images.pexels.com/photos/256541/pexels-photo-256541.jpeg',
+  //   confessionCount: 103,
+  // },
+  // {
+  //   id: 'indus',
+  //   name: 'Indus University',
+  //   logo: 'https://images.pexels.com/photos/459653/pexels-photo-459653.jpeg',
+  //   location: 'Ahmedabad, Gujarat',
+  //   bannerImage: 'https://images.pexels.com/photos/256541/pexels-photo-256541.jpeg',
+  //   confessionCount: 74,
+  // },
+  // {
+  //   id: 'silveroak',
+  //   name: 'Silver Oak University',
+  //   logo: 'https://images.pexels.com/photos/207691/pexels-photo-207691.jpeg',
+  //   location: 'Ahmedabad, Gujarat',
+  //   bannerImage: 'https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg',
+  //   confessionCount: 93,
+  // },
+  // {
+  //   id: 'ganpat',
+  //   name: 'Ganpat University',
+  //   logo: 'https://images.pexels.com/photos/207691/pexels-photo-207691.jpeg',
+  //   location: 'Mehsana (near Ahmedabad), Gujarat',
+  //   bannerImage: 'https://images.pexels.com/photos/267350/pexels-photo-267350.jpeg',
+  //   confessionCount: 61,
+  // },
+  // {
+  //   id: 'au',
+  //   name: 'Ahmedabad University',
+  //   logo: 'https://images.pexels.com/photos/207691/pexels-photo-207691.jpeg',
+  //   location: 'Ahmedabad, Gujarat',
+  //   bannerImage: 'https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg',
+  //   confessionCount: 45,
+  // },
+  // {
+  //   id: 'itm',
+  //   name: 'ITM Vocational University',
+  //   logo: 'https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg',
+  //   location: 'Ahmedabad, Gujarat',
+  //   bannerImage: 'https://images.pexels.com/photos/356079/pexels-photo-356079.jpeg',
+  //   confessionCount: 30,
+  // },
 ];
+
 
 // Mock data for confessions
 export const confessions: Confession[] = [
@@ -208,6 +241,6 @@ export const getTagIcon = (tag: string) => {
     case 'revenge':
       return Flame;
     default:
-      return MoreHorizontal;
+      return null;
   }
 };

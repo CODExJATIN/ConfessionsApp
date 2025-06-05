@@ -29,10 +29,10 @@ const CollegeCard = ({ college }) => {
             <MapPin size={14} className="mr-1" />
             <span>{college.location}</span>
           </div>
-          <div className="flex items-center text-primary-500 text-sm font-medium">
+          {/* <div className="flex items-center text-primary-500 text-sm font-medium">
             <MessageCircle size={14} className="mr-1" />
             <span>{college.confessionCount} confessions</span>
-          </div>
+          </div> */}
         </div>
       </Link>
     </motion.div>

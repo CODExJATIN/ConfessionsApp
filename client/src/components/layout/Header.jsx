@@ -5,12 +5,15 @@ import { Button } from '../ui/button';
 import { Search, MessageCircle, Moon, Sun, Menu } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { useUser } from '../../store/useUser';
+import { LogOut } from 'lucide-react';
+import axios from 'axios';
 
 const Header = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const user = useUser((state) => state.user);
+  const setUser = useUser((state) => state.setUser);
 
   useEffect(() => {
     console.log(user);
@@ -19,6 +22,27 @@ const Header = () => {
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
+
+  const handleLogout = () => {
+    axios.post(`${import.meta.env.VITE_BASE_URL}/user-routes/logout`, {}, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    }).then((response) => {
+      console.log('Logout successful:', response.data);
+      localStorage.removeItem('token');
+        setUser({
+          username: '',
+          email: '',
+          fullname: '',
+          id: '',
+        });
+      window.location.href = '/auth'; // Redirect to login page
+    }).catch((error) => {
+      console.error('Error during logout:', error);
+    });
+  }
+
 
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 bg-white/75 dark:bg-gray-900/75 transition-colors duration-300">
@@ -88,7 +112,12 @@ const Header = () => {
 
           {/* if user is logged in then show circle with logged in user's username's first character */}
 
-          {user?.fullname != "" ? <div className='w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center'>{user.fullname.charAt(0)}</div> : <Button
+          {user?.fullname != "" ? <div 
+          onClick={()=> window.location.href = '/profile'}
+          className='w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center'>
+            {user.fullname.charAt(0)}
+            </div> : 
+            <Button
             variant="primary"
             size="sm"
             className="hidden sm:flex"
@@ -153,13 +182,27 @@ const Header = () => {
                 className="input pl-9 h-9 w-full"
               />
             </div>
-            <Button 
+            {user?.fullname != "" ? <div className='w-full flex justify-center bg-gray-200 dark:bg-gray-800 p-2 items-center space-x-2'><div
+            onClick={()=> window.location.href = '/profile'}
+             className='w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center'>
+              {user.fullname.charAt(0)}
+              </div><span>{user.fullname}</span></div> : <Button 
               variant="primary"
               size="sm"
               className="mt-2"
+              onClick={() => window.location.href = '/auth'}
             >
               Log In
-            </Button>
+            </Button>}
+            { user?.fullname != "" && (
+              <Button
+              onClick={handleLogout}
+                className="w-full flex justify-center items-center gap-2 bg-red-600 text-white px-4 py-2 h-10 font-semibold hover:bg-red-700 transition-colors duration-200"
+              >
+                <span>LogOut</span>
+              </Button>
+
+            )}
           </nav>
         </div>
       )}

@@ -9,6 +9,19 @@ import NewPage from './pages/NewPage';
 import AuthPage from './pages/AuthPage';
 import { useUser } from './store/useUser';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+import UserProfile from './pages/ProfilePage';
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 
 function App() {
   const setUser = useUser((state) => state.setUser);
@@ -39,6 +52,7 @@ function App() {
   return (
     <ThemeProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/college/:collegeId" element={<CollegePage />} />
@@ -46,6 +60,7 @@ function App() {
           <Route path="/trending" element={<TrendingPage />} />
           <Route path="/new" element={<NewPage />} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/profile" element={<UserProfile />} />
         </Routes>
       </Router>
     </ThemeProvider>

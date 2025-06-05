@@ -52,7 +52,27 @@ export const getLikesCount = AsyncHandler(async (req, res) => {
 // 2. Get all likes by a user (confessions and comments)
 export const getLikesByUser = AsyncHandler(async (req, res) => {
   const userId = req.user?._id;
-  const likes = await Like.find({ LikedBy: userId });
+  const likes = await Like.find({ LikedBy: userId })
+  .populate({
+    path: "Confession",
+    populate: [
+      {
+        path: "Comments",
+        populate: {
+          path: "User",
+          select: "Username FullName",
+        },
+      },
+      {
+        path: "Likes",
+        populate: {
+          path: "LikedBy",
+          select: "Username FullName",
+        },
+      },
+    ],
+  });
+
   res.status(200).json(new ApiResponse(200, "User likes fetched", likes));
 });
 

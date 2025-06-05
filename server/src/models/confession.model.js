@@ -15,7 +15,7 @@ const confessionSchema = new Schema(
     college: {
       type: String,
       required: true,
-      enum: ["ldce", "sal"],
+      enum: ["ldce", "sal","gu"],
       lowercase: true, // ensures values are stored in lowercase
     },
     Likes:[{

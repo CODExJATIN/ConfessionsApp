@@ -4,12 +4,28 @@ import ConfessionList from '../components/confessions/ConfessionList';
 import { confessions } from '../data/mockData';
 import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 const NewPage = () => {
+
+    const [confessions, setConfessions] = React.useState([]);
+
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_BASE_URL}/confession-routes/`)
+      .then((response) => {
+        console.log('Confessions fetched:', response.data.data);
+          const newConfessions = [...response.data.data].sort((a, b) => {
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+          });
+        setConfessions(newConfessions || []);
+      })
+      .catch((error) => {
+        console.error('Error fetching confessions:', error);
+      });
+  }, []);
   // Sort confessions by date
-  const newConfessions = [...confessions].sort((a, b) => {
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-  });
+
 
   return (
     <Layout>
@@ -24,7 +40,7 @@ const NewPage = () => {
           <h1 className="text-2xl font-bold">Latest Confessions</h1>
         </motion.div>
 
-        <ConfessionList confessions={newConfessions} />
+        <ConfessionList confessions={confessions} />
       </div>
     </Layout>
   );

@@ -58,8 +58,8 @@ const HomePage = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <h2 className="text-2xl font-semibold mb-6">Popular Colleges</h2>
-          
+          <h2 className="text-2xl font-semibold mb-6">Campus Picks</h2>
+
           {filteredColleges.length > 0 ? (
             <CollegeGrid colleges={filteredColleges} />
           ) : (
