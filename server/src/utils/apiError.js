@@ -1,11 +1,11 @@
 class ApiError extends Error {
     // Constructor for the ApiError class
-    constructor(status_code, message = "something went wrong", errors = [], stack = "") {
+    constructor(statusCode, message = "something went wrong", errors = [], stack = "") {
         // Call the parent class (Error) constructor with the message parameter
         super(message);
         
         // Set the status code for the error (e.g., 400 for Bad Request)
-        this.status_code = status_code;
+        this.statusCode = statusCode;
         
         // The message passed to the error, defaults to "something went wrong"
         this.message = message;
