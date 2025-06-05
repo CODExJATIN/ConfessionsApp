@@ -38,6 +38,7 @@ const CollegePage = () => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/confession-routes/college/${collegeId}`);
         setConfessions(response.data.data || []);
+        console.log("confessions: ", response.data.data);
       } catch (err) {
         setError('Failed to load confessions');
       } finally {
@@ -46,7 +47,7 @@ const CollegePage = () => {
     };
 
     fetchConfessions();
-    console.log("confessions: ",confessions);
+    
   }, [collegeId]);
 
   if (!college) {

@@ -17,10 +17,11 @@ const ConfessionCard = ({ confession, onCommentClick }) => {
 
   useEffect(() => {
     // Check if current user has liked this confession
-    if (user && confession.Likes?.includes(user.id)) {
-      setIsLiked(true);
+    if (user && confession.Likes) {
+    const hasLiked = confession.Likes.some((like) => like.LikedBy._id === user.id);
+    setIsLiked(hasLiked);
     }
-    }, [user, confession.Likes]);
+  }, [user, confession.Likes]);
 
   // Find college by matching college ID string in confession.college
   const college = colleges.find((c) => c.id === confession.college);
