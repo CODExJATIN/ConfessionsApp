@@ -1,28 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import Layout from '../components/layout/Layout';
 import ConfessionList from '../components/confessions/ConfessionList';
 import NewConfessionModal from '../components/confessions/NewConfessionModal';
 import { Tabs } from '../components/ui/tabs';
-import { colleges, confessions } from '../data/mockData';
+import { colleges } from '../data/mockData';
 import { Flame, Clock, Star, Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const CollegePage = () => {
   const { collegeId } = useParams();
   const [college, setCollege] = useState(null);
+  const [confessions, setConfessions] = useState([]);
   const [activeTab, setActiveTab] = useState('trending');
   const [isNewConfessionOpen, setIsNewConfessionOpen] = useState(false);
-  
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     if (collegeId) {
       const foundCollege = colleges.find((c) => c.id === collegeId);
       if (foundCollege) {
         setCollege(foundCollege);
+      } else {
+        setCollege(null);
       }
     }
   }, [collegeId]);
-  
+
+  useEffect(() => {
+    if (!collegeId) return;
+
+    const fetchConfessions = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/confession-routes/college/${collegeId}`);
+        setConfessions(response.data.data || []);
+      } catch (err) {
+        setError('Failed to load confessions');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchConfessions();
+  }, [collegeId]);
+
   if (!college) {
     return (
       <Layout>
@@ -35,36 +60,36 @@ const CollegePage = () => {
       </Layout>
     );
   }
-  
-  // Get confessions for this college
-  const collegeConfessions = confessions.filter((c) => c.collegeId === collegeId);
-  
+
+  // Filter confessions by college (just in case)
+  const collegeConfessions = confessions.filter((c) => c.college === collegeId);
+
   // Sort confessions based on active tab
   const sortedConfessions = [...collegeConfessions].sort((a, b) => {
     if (activeTab === 'new') {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     } else if (activeTab === 'top') {
-      return b.likes - a.likes;
+      return (b.Likes?.length || 0) - (a.Likes?.length || 0);
     } else {
       // Trending - combination of recency and engagement
       const recencyA = new Date(a.createdAt).getTime();
       const recencyB = new Date(b.createdAt).getTime();
-      const engagementA = a.likes + a.comments * 2;
-      const engagementB = b.likes + b.comments * 2;
-      
+      const engagementA = (a.Likes?.length || 0) + (a.Comments?.length || 0) * 2;
+      const engagementB = (b.Likes?.length || 0) + (b.Comments?.length || 0) * 2;
+
       const scoreA = engagementA * 0.7 + recencyA * 0.3;
       const scoreB = engagementB * 0.7 + recencyB * 0.3;
-      
+
       return scoreB - scoreA;
     }
   });
-  
+
   const tabs = [
     { id: 'trending', label: <><Flame size={16} className="mr-1" /> Trending</> },
     { id: 'new', label: <><Clock size={16} className="mr-1" /> New</> },
     { id: 'top', label: <><Star size={16} className="mr-1" /> Top</> },
   ];
-  
+
   return (
     <Layout>
       <div className="relative">
@@ -77,7 +102,7 @@ const CollegePage = () => {
             />
           )}
         </div>
-        
+
         <div className="container-narrow relative -mt-20">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -96,11 +121,11 @@ const CollegePage = () => {
               <h1 className="text-2xl font-bold mb-1">{college.name}</h1>
               <p className="text-gray-600 dark:text-gray-400 mb-2">{college.location}</p>
               <p className="text-sm font-medium text-primary-600 dark:text-primary-400">
-                {college.confessionCount} confessions
+                {collegeConfessions.length} confessions
               </p>
             </div>
           </motion.div>
-          
+
           <div className="mb-6">
             <Tabs
               tabs={tabs}
@@ -108,8 +133,16 @@ const CollegePage = () => {
               onChange={(id) => setActiveTab(id)}
             />
           </div>
-          
-          {sortedConfessions.length > 0 ? (
+
+          {loading ? (
+            <div className="text-center py-12 text-gray-600 dark:text-gray-400">
+              Loading confessions...
+            </div>
+          ) : error ? (
+            <div className="text-center py-12 text-red-500">
+              {error}
+            </div>
+          ) : sortedConfessions.length > 0 ? (
             <ConfessionList confessions={sortedConfessions} />
           ) : (
             <div className="text-center py-12 bg-white dark:bg-gray-900 rounded-xl shadow-sm">
@@ -119,7 +152,7 @@ const CollegePage = () => {
           )}
         </div>
       </div>
-      
+
       <button
         onClick={() => setIsNewConfessionOpen(true)}
         className="btn-fab"
@@ -127,11 +160,12 @@ const CollegePage = () => {
       >
         <Plus size={24} />
       </button>
-      
+
       <NewConfessionModal
         isOpen={isNewConfessionOpen}
         onClose={() => setIsNewConfessionOpen(false)}
         collegeId={collegeId}
+        setConfessions={setConfessions}
       />
     </Layout>
   );

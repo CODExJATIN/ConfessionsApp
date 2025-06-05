@@ -3,6 +3,8 @@ import { AsyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { ApiError } from "../utils/apiError.js"; 
 
+import { Confession } from "../models/confession.model.js";
+
 
 
 
@@ -20,6 +22,12 @@ export const createComment = AsyncHandler(async (req, res) => {
     Confession: confessionId,
     Text: text,
   });
+
+  //update the confession to include the new comment
+  await Confession.findByIdAndUpdate(confessionId, {
+    $push: { Comments: comment._id },
+  });
+  
 
   res.status(201).json(new ApiResponse(201, "Comment created", comment));
 });

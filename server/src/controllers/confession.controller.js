@@ -5,7 +5,7 @@ import { ApiError } from "../utils/apiError.js";
 
 // 1. Create confession (authenticated user)
 export const createConfession = AsyncHandler(async (req, res) => {
-  const { text, college, tags } = req.body;
+  const { text, collegeName, tags } = req.body;
   const userId = req.user?._id;
 
   if (!text) {
@@ -18,7 +18,7 @@ export const createConfession = AsyncHandler(async (req, res) => {
   const newConfession = await Confession.create({
     text,
     owner: userId,
-    college,
+    college: collegeName || "ldce", // Default to "ldce" if not provided
     tags: tags || [],
   });
 
@@ -27,7 +27,7 @@ export const createConfession = AsyncHandler(async (req, res) => {
 
 // 2. Create anonymous confession (owner not set)
 export const createAnonymousConfession = AsyncHandler(async (req, res) => {
-  const { text, college, tags } = req.body;
+  const { text, collegeName, tags } = req.body;
  
   if (!text) {
     throw new ApiError(400, "Confession text is required.");
@@ -35,7 +35,7 @@ export const createAnonymousConfession = AsyncHandler(async (req, res) => {
 
   const newConfession = await Confession.create({
     text,
-    college,
+    college:collegeName,
     tags: tags || [],
   });
 
@@ -45,14 +45,14 @@ export const createAnonymousConfession = AsyncHandler(async (req, res) => {
 // 3. Get all confessions with nested population
 export const getAllConfessions = AsyncHandler(async (req, res) => {
   const confessions = await Confession.find()
-    .populate("owner", "username fullName")
+    .populate("owner", "Username FullName")
     .populate({
       path: "Likes",
-      populate: { path: "LikedBy", select: "username fullName" },
+      populate: { path: "LikedBy", select: "Username FullName" },
     })
     .populate({
       path: "Comments",
-      populate: { path: "User", select: "username fullName" },
+      populate: { path: "User", select: "Username FullName" },
     })
     .sort({ createdAt: -1 });
 
@@ -63,14 +63,14 @@ export const getAllConfessions = AsyncHandler(async (req, res) => {
 export const getConfessionById = AsyncHandler(async (req, res) => {
   const { id } = req.params;
   const confession = await Confession.findById(id)
-    .populate("owner", "username fullName")
+    .populate("owner", "Username FullName")
     .populate({
       path: "Likes",
-      populate: { path: "LikedBy", select: "username fullName" },
+      populate: { path: "LikedBy", select: "Username FullName" },
     })
     .populate({
       path: "Comments",
-      populate: { path: "User", select: "username fullName" },
+      populate: { path: "User", select: "Username FullName" },
     });
 
   if (!confession) throw new ApiError(404, "Confession not found");
@@ -81,14 +81,14 @@ export const getConfessionById = AsyncHandler(async (req, res) => {
 export const getConfessionsByUser = AsyncHandler(async (req, res) => {
   const { userId } = req.params;
   const confessions = await Confession.find({ owner: userId })
-    .populate("owner", "username fullName")
+    .populate("owner", "Username FullName")
     .populate({
       path: "Likes",
-      populate: { path: "LikedBy", select: "username fullName" },
+      populate: { path: "LikedBy", select: "Username FullName" },
     })
     .populate({
       path: "Comments",
-      populate: { path: "User", select: "username fullName" },
+      populate: { path: "User", select: "Username FullName" },
     })
     .sort({ createdAt: -1 });
 
@@ -98,7 +98,7 @@ export const getConfessionsByUser = AsyncHandler(async (req, res) => {
 // 6. Update confession
 export const updateConfession = AsyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { text, college, tags } = req.body;
+  const { text, collegeName, tags } = req.body;
   const userId = req.user?._id;
 
   if (!text) throw new ApiError(400, "Confession text is required.");
@@ -110,7 +110,7 @@ export const updateConfession = AsyncHandler(async (req, res) => {
     throw new ApiError(403, "Not authorized to update this confession");
 
   confession.text = text;
-  if (college) confession.college = college;
+  if (collegeName) confession.collegeName = collegeName;
   if (tags) confession.tags = tags;
 
   await confession.save();
@@ -132,4 +132,25 @@ export const deleteConfession = AsyncHandler(async (req, res) => {
   await confession.deleteOne();
 
   res.status(200).json(new ApiResponse(200, "Confession deleted successfully", {}));
+});
+
+// 8. Get confessions by collegeName
+export const getConfessionsByCollege = AsyncHandler(async (req, res) => {
+  const { collegeName } = req.params;
+
+  if (!collegeName) throw new ApiError(400, "College parameter is required");
+
+  const confessions = await Confession.find({ college:collegeName })
+    .populate("owner", "Username FullName")
+    .populate({
+      path: "Likes",
+      populate: { path: "LikedBy", select: "Username FullName" },
+    })
+    .populate({
+      path: "Comments",
+      populate: { path: "User", select: "Username FullName" },
+    })
+    .sort({ createdAt: -1 });
+
+  res.status(200).json(new ApiResponse(200, "College confessions fetched successfully", confessions));
 });

@@ -4,6 +4,9 @@ import { X, User, Send } from 'lucide-react';
 
 import { comments } from '../../data/mockData';
 import { motion, AnimatePresence } from 'framer-motion';
+import { use } from 'react';
+
+import { useEffect } from 'react';
 
 
 const CommentsDrawer = ({
@@ -15,9 +18,13 @@ const CommentsDrawer = ({
   const [isLoggedIn] = useState(false);
   
   // Filter comments for this confession
-  const confessionComments = comments.filter(
-    (comment) => comment.confessionId === confession.id
-  );
+  const confessionComments = confession?.Comments;
+
+  useEffect(() => {
+    if (confession) {
+      console.log('Confession Comments:', confessionComments);
+    }
+  }, [confession, confessionComments]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -88,7 +95,9 @@ const CommentsDrawer = ({
                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                     Log in to join the conversation
                   </p>
-                  <Button variant="primary" size="sm">
+                  <Button
+                   onClick={() => window.location.href = '/auth'}
+                   variant="primary" size="sm">
                     Log In
                   </Button>
                 </div>
@@ -105,22 +114,14 @@ const CommentItem = ({ comment }) => {
   return (
     <div className="flex mb-4">
       <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden mr-3 flex-shrink-0">
-        {comment.author.avatar ? (
-          <img
-            src={comment.author.avatar}
-            alt={comment.author.handle || 'Anonymous'}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <User size={16} className="text-gray-500 dark:text-gray-400" />
-        )}
+          <div className="text-gray-800 dark:text-gray-200 font-medium">
+            {comment.User.FullName.charAt(0).toUpperCase()}
+          </div>
       </div>
       <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 flex-grow">
         <div className="flex items-center justify-between mb-1">
           <span className="font-medium text-sm">
-            {comment.author.isAnonymous
-              ? 'Anonymous'
-              : `@${comment.author.handle}`}
+              @{comment.User.Username}
           </span>
           <span className="text-xs text-gray-500 dark:text-gray-400">
             {new Date(comment.createdAt).toLocaleDateString('en-US', {
@@ -131,7 +132,7 @@ const CommentItem = ({ comment }) => {
             })}
           </span>
         </div>
-        <p className="text-sm text-gray-800 dark:text-gray-200">{comment.text}</p>
+        <p className="text-sm text-gray-800 dark:text-gray-200">{comment.Text}</p>
       </div>
     </div>
   );
