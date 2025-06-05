@@ -6,6 +6,7 @@ import userRouter from './routes/User.routes.js';
 import likeRouter from './routes/Like.routes.js';
 import confessionRouter from './routes/confession.routes.js';
 import commentRouter from './routes/comment.routes.js';
+import { Error_Handler } from './middlewares/Errors.middlewares.js';
 
 const app = express();
 app.use(
@@ -23,4 +24,5 @@ app.use("/api/v1/user-routes", userRouter)
 app.use("/api/v1/like-routes", likeRouter)
 app.use("/api/v1/confession-routes", confessionRouter)
 app.use("/api/v1/comment-routes", commentRouter)
+app.use(Error_Handler)
 export default app

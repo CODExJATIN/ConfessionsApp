@@ -10,24 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
+
     "clsx": "^2.1.0",
-    "framer-motion": "^11.0.8",
-=======
     "axios": "^1.9.0",
-    "clsx": "^2.1.0",
     "framer-motion": "^11.18.2",
->>>>>>> 7d28c2d77ca8e467d4eedc4c2f0f6c5e118575b5
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.22.3",
-<<<<<<< HEAD
     "tailwind-merge": "^2.2.1",
     "zustand": "^5.0.5"
-=======
-    "tailwind-merge": "^2.2.1"
->>>>>>> 7d28c2d77ca8e467d4eedc4c2f0f6c5e118575b5
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
