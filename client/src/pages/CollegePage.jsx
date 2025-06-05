@@ -46,6 +46,7 @@ const CollegePage = () => {
     };
 
     fetchConfessions();
+    console.log("confessions: ",confessions);
   }, [collegeId]);
 
   if (!college) {
