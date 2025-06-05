@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '../../utils/cn';
 import { Button } from '../ui/button';
@@ -6,11 +6,21 @@ import { Heart, MessageCircle, Flag, User, School } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getTagIcon } from '../../data/mockData';
 import { colleges } from '../../data/mockData';
+import { useUser } from '../../store/useUser';
+import axios from 'axios';
 
 const ConfessionCard = ({ confession, onCommentClick }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(confession.Likes?.length || 0);
   const [isExpanded, setIsExpanded] = useState(false);
+  const user = useUser((state)=> state.user);
+
+  useEffect(() => {
+    // Check if current user has liked this confession
+    if (user && confession.Likes?.includes(user.id)) {
+      setIsLiked(true);
+    }
+    }, [user, confession.Likes]);
 
   // Find college by matching college ID string in confession.college
   const college = colleges.find((c) => c.id === confession.college);
@@ -19,9 +29,32 @@ const ConfessionCard = ({ confession, onCommentClick }) => {
     if (isLiked) {
       setLikeCount((prev) => Math.max(prev - 1, 0));
       // Optionally remove current user ID from Likes array here if integrated
+      axios.delete(`${import.meta.env.VITE_BASE_URL}/like-routes/${confession._id}/unlike`, {
+        confessionId: confession._id,
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }).then((response) => {
+        console.log('Like removed:', response.data);
+      }).catch((error) => {
+        console.error('Error removing like:', error);
+      });
+
     } else {
       setLikeCount((prev) => prev + 1);
       // Optionally add current user ID to Likes array here if integrated
+      axios.post(`${import.meta.env.VITE_BASE_URL}/like-routes/${confession._id}/like`, {
+        confessionId: confession._id,
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }).then((response) => {
+        console.log('Like added:', response.data);
+      }).catch((error) => {
+        console.error('Error adding like:', error);
+      });
     }
     setIsLiked((prev) => !prev);
   };

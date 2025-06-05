@@ -6,10 +6,7 @@ import { AsyncHandler } from "../utils/asyncHandler.js";
 const VerifyJwt = AsyncHandler(async function (req, _, next) {
 try {
       // Extract token from different places
-      const Token =
-        req.cookies.Access_Token ||
-        req.body.Access_Token ||
-        req.header("Authorization")?.replace("Bearer ", "");
+      const Token = req.header("Authorization")?.replace("Bearer ", "");
     
       if (!Token) {
         throw new ApiError(400, "Token is required. Please provide it in cookies, body, or Authorization header.");
