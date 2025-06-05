@@ -11,7 +11,7 @@ import { Error_Handler } from './middlewares/Errors.middlewares.js';
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:5173", // Update with your frontend URL
+    origin: process.env.CORS_ORIGIN,
     credentials: true,              
   }),
 );
