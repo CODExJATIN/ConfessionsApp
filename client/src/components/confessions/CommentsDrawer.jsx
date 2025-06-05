@@ -7,6 +7,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { use } from 'react';
 
 import { useEffect } from 'react';
+import { useUser } from '../../store/useUser';
+import axios from 'axios';
 
 
 const CommentsDrawer = ({
@@ -15,10 +17,13 @@ const CommentsDrawer = ({
   onClose,
 }) => {
   const [newComment, setNewComment] = useState('');
-  const [isLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const user = useUser((state) => state.user);
   
   // Filter comments for this confession
   const confessionComments = confession?.Comments;
+
+  const [commentList, setCommentList] = useState(confessionComments || []);
 
   useEffect(() => {
     if (confession) {
@@ -26,14 +31,51 @@ const CommentsDrawer = ({
     }
   }, [confession, confessionComments]);
 
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (newComment.trim()) {
       // In a real app, would submit the comment to backend
-      alert('Comment functionality would be implemented in a full version');
-      setNewComment('');
+      // alert('Comment functionality would be implemented in a full version');
+      // setNewComment('');
+
+      axios.post(`${import.meta.env.VITE_BASE_URL}/comment-routes/`, {
+        confessionId: confession._id,
+        text: newComment,
+      }, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }).then((response) => {
+        console.log('Comment created:', response.data);
+        // Update comment list with new comment
+        setCommentList((prevComments) => [
+          ...prevComments,
+          {
+            id: response.data.data._id,
+            Text: newComment,
+            User: {
+              Username: user.username,
+              FullName: user.fullname,
+            },
+            createdAt: new Date().toISOString(),
+          },
+        ]);
+        setNewComment('');
+      }).catch((error) => {
+        console.error('Error creating comment:', error);
+      });
     }
   };
+
+    useEffect(() => {
+
+    if(user.username!=""){
+      setIsLoggedIn(true);
+    }
+
+  },[]);
 
   return (
     <AnimatePresence>
@@ -63,8 +105,8 @@ const CommentsDrawer = ({
             </div>
             
             <div className="overflow-y-auto flex-grow p-4">
-              {confessionComments.length > 0 ? (
-                confessionComments.map((comment) => (
+              {commentList.length > 0 ? (
+                commentList.map((comment) => (
                   <CommentItem key={comment.id} comment={comment} />
                 ))
               ) : (

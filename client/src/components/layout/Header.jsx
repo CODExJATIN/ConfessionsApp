@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '../../utils/cn';
 import { Button } from '../ui/button';
 import { Search, MessageCircle, Moon, Sun, Menu } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useUser } from '../../store/useUser';
 
 const Header = () => {
   const { isDarkMode, toggleTheme } = useTheme();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const user = useUser((state) => state.user);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -79,8 +85,10 @@ const Header = () => {
           >
             {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </Button>
-          
-          <Button 
+
+          {/* if user is logged in then show circle with logged in user's username's first character */}
+
+          {user?.fullname != "" ? <div className='w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center'>{user.fullname.charAt(0)}</div> : <Button
             variant="primary"
             size="sm"
             className="hidden sm:flex"
@@ -88,7 +96,7 @@ const Header = () => {
             }
           >
             Log In
-          </Button>
+          </Button>}
           
           {/* Mobile menu button */}
           <Button 

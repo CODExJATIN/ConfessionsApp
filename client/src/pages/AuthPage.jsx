@@ -5,6 +5,7 @@ import { Button } from '../components/ui/button';
 import { motion } from 'framer-motion';
 import { Mail, Lock, User } from 'lucide-react';
 import axios from 'axios';
+import { useUser } from '../store/useUser';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,6 +15,7 @@ const AuthPage = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const setUser = useUser((state) => state.setUser);
 
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -30,7 +32,14 @@ const AuthPage = () => {
         });
 
         console.log('Login Success:', data);
-        // localStorage.setItem('token', data.token);
+        localStorage.setItem('token', data.data.Access_Token);
+
+        setUser({
+          username: data.data.User.Username,
+          email: data.data.User.Email,
+          fullname: data.data.User.FullName,
+          id: data.data.User._id,
+        });
         navigate('/');
       } else {
         // Signup with fullname, username, email, and password
