@@ -13,6 +13,7 @@ const ConfessionList = ({ confessions }) => {
   };
 
   const handleCloseComments = () => {
+    setSelectedConfession(null);
     setIsCommentsOpen(false);
   };
 

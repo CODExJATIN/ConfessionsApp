@@ -11,6 +11,9 @@ import { useUser } from './store/useUser';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import UserProfile from './pages/ProfilePage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsOfServicePage from './pages/TermsOfService';
+import CommunityGuidelinesPage from './pages/CommunityGuidelinesPage';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -61,6 +64,9 @@ function App() {
           <Route path="/new" element={<NewPage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms" element={<TermsOfServicePage/>} />
+          <Route path="/guidelines" element={<CommunityGuidelinesPage />} />
         </Routes>
       </Router>
     </ThemeProvider>

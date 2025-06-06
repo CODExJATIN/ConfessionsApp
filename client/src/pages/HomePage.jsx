@@ -5,10 +5,14 @@ import NewConfessionModal from '../components/confessions/NewConfessionModal';
 import { Search } from 'lucide-react';
 import { colleges } from '../data/mockData';
 import { motion } from 'framer-motion';
+import { useUser } from '../store/useUser';
+import UserAgreementModal from '../components/UserAgreement';
+
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isNewConfessionOpen, setIsNewConfessionOpen] = useState(false);
+  const user = useUser((state) => state.user);
   
   const filteredColleges = colleges.filter((college) =>
     college.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -17,6 +21,7 @@ const HomePage = () => {
   
   return (
     <Layout>
+      <UserAgreementModal user={user}/>
       <div className="container-narrow py-8">
         <div className="text-center mb-12">
           <motion.h1 
