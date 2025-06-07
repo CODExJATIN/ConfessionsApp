@@ -9,6 +9,7 @@ import { use } from 'react';
 import { useEffect } from 'react';
 import { useUser } from '../../store/useUser';
 import axios from 'axios';
+import { isAbusive } from '../../utils/abuseCheck';
 
 
 const CommentsDrawer = ({
@@ -36,9 +37,16 @@ const CommentsDrawer = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     if (newComment.trim()) {
-      // In a real app, would submit the comment to backend
-      // alert('Comment functionality would be implemented in a full version');
-      // setNewComment('');
+
+      // Check for abusive language
+
+      if(isAbusive(newComment)) {
+        alert("Your comment contains abusive language. Please revise it.");
+        return;
+      }
+
+
+      // Post new comment to backend
 
       axios.post(`${import.meta.env.VITE_BASE_URL}/comment-routes/`, {
         confessionId: confession._id,

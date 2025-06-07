@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../../utils/cn';
 import axios from 'axios';
 import { useUser } from '../../store/useUser';
+import { isAbusive } from '../../utils/abuseCheck';
 
 const popularTags = ['crush', 'tech', 'hostel', 'food', 'professor', 'exam', 'fail', 'success', 'funny', 'rant'];
 
@@ -38,6 +39,12 @@ const NewConfessionModal = ({
     if (!confessionText.trim()) return;
 
     setIsSubmitting(true);
+
+    if(isAbusive(confessionText)) {
+      alert("Your confession contains abusive language. Please revise it.");
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const body = {

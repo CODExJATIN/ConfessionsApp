@@ -26,7 +26,6 @@ const PrivacyPolicyPage = () => {
           </p>
           <ul className="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1 mt-2">
             <li>Device type and browser type</li>
-            <li>IP address (used only for moderation and abuse prevention)</li>
             <li>Timestamp and selected college</li>
             <li>Content of the anonymous post</li>
           </ul>
