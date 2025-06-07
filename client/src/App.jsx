@@ -25,6 +25,13 @@ const ScrollToTop = () => {
   return null;
 };
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js');
+  });
+}
+
+
 
 function App() {
   const setUser = useUser((state) => state.setUser);
