@@ -8,6 +8,7 @@ import { Tabs } from '../components/ui/tabs';
 import { colleges } from '../data/mockData';
 import { Flame, Clock, Star, Plus } from 'lucide-react';
 import { motion } from 'framer-motion';
+import ConfessionLoader from '../components/loader/Loader';
 
 const CollegePage = () => {
   const { collegeId } = useParams();
@@ -137,9 +138,7 @@ const CollegePage = () => {
           </div>
 
           {loading ? (
-            <div className="text-center py-12 text-gray-600 dark:text-gray-400">
-              Loading confessions...
-            </div>
+            <ConfessionLoader/>
           ) : error ? (
             <div className="text-center py-12 text-red-500">
               {error}

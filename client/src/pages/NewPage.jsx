@@ -6,10 +6,12 @@ import { motion } from 'framer-motion';
 import { Clock } from 'lucide-react';
 import { useEffect } from 'react';
 import axios from 'axios';
+import ConfessionLoader from '../components/loader/Loader';
 
 const NewPage = () => {
 
     const [confessions, setConfessions] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_BASE_URL}/confession-routes/`)
@@ -19,13 +21,17 @@ const NewPage = () => {
             return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
           });
         setConfessions(newConfessions || []);
+        setLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching confessions:', error);
+        setLoading(false);
       });
   }, []);
-  // Sort confessions by date
-
+  
+  if (loading) {
+    return (<ConfessionLoader />);
+  }
 
   return (
     <Layout>

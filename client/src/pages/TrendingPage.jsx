@@ -5,10 +5,12 @@ import { motion } from 'framer-motion';
 import { Flame } from 'lucide-react';
 import { useEffect } from 'react';
 import axios from 'axios';
+import ConfessionLoader from '../components/loader/Loader';
 
 const TrendingPage = () => {
 
   const [confessions, setConfessions] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_BASE_URL}/confession-routes/`)
@@ -22,11 +24,17 @@ const TrendingPage = () => {
           });
         //console.log('Confessions fetched:', response.data.data);
         setConfessions(trendingConfessions || []);
+        setLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching confessions:', error);
+        setLoading(false);
       });
   }, []);
+
+  if (loading) {
+    return(<ConfessionLoader/>);
+  }
 
 
   return (
