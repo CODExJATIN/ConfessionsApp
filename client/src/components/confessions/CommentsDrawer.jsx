@@ -115,7 +115,7 @@ const CommentsDrawer = ({
             <div className="overflow-y-auto flex-grow p-4">
               {commentList.length > 0 ? (
                 commentList.map((comment) => (
-                  <CommentItem key={comment.id} comment={comment} />
+                  <CommentItem key={comment._id} comment={comment} />
                 ))
               ) : (
                 <div className="flex flex-col items-center justify-center py-8 text-center text-gray-500 dark:text-gray-400">

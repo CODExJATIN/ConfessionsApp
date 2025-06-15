@@ -68,7 +68,7 @@ const CommunityGuidelinesPage = () => {
 
         <SectionCard title="9. Feedback Welcome">
           <p className="text-gray-600 dark:text-gray-400">
-            We’re building this platform together. Share your suggestions or concerns at <a href="mailto:jatin5140p@gmaqil.com" className="text-primary-600">jatin5140p@gmaqil.com</a>.
+            We’re building this platform together. Share your suggestions or concerns at <a href="mailto:hello@codexjatin.me" className="text-primary-600">hello@codexjatin.me</a>.
           </p>
         </SectionCard>
 

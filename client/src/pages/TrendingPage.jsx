@@ -32,10 +32,6 @@ const TrendingPage = () => {
       });
   }, []);
 
-  if (loading) {
-    return(<ConfessionLoader/>);
-  }
-
 
   return (
     <Layout>
@@ -50,7 +46,13 @@ const TrendingPage = () => {
           <h1 className="text-2xl font-bold">Trending Confessions</h1>
         </motion.div>
 
-        <ConfessionList confessions={confessions} />
+        {
+          loading? <ConfessionLoader/> : <ConfessionList confessions={confessions} />
+        }
+
+
+
+        
       </div>
     </Layout>
   );

@@ -5,7 +5,7 @@ const confessionSchema = new Schema(
     text: {
       type: String,
       required: true,
-      maxlength: 280, // Max length for a confession (like a tweet)
+      maxlength: 500,
       trim: true,
     },
     owner: {

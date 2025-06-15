@@ -21,7 +21,7 @@ const ConfessionList = ({ confessions }) => {
     <div>
       {confessions.map((confession) => (
         <ConfessionCard
-          key={confession.id}
+          key={confession._id}
           confession={confession}
           onCommentClick={handleCommentClick}
         />

@@ -15,6 +15,12 @@ const ConfessionCard = ({ confession, onCommentClick }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const user = useUser((state) => state.user);
 
+  const maxLength = 300;
+  const shouldTruncate = confession.text.length > maxLength;
+  const displayedText = isExpanded
+    ? confession.text
+    : confession.text.slice(0, maxLength) + (shouldTruncate ? '...' : '');
+
   useEffect(() => {
     if (user && confession.Likes) {
       const hasLiked = confession.Likes.some((like) => like.LikedBy._id === user.id);
@@ -75,7 +81,7 @@ const ConfessionCard = ({ confession, onCommentClick }) => {
         </div>
         <div className="flex flex-col">
           <div className="flex items-center gap-2 text-sm sm:text-base font-medium text-gray-800 dark:text-gray-200">
-            {confession.owner ? `@${confession.ownner.Username}` : 'Anonymous'}
+            {confession.owner ? `@${confession.owner.Username}` : 'Anonymous'}
             <time className="text-xs text-gray-500 dark:text-gray-400">
               {new Date(confession.createdAt).toLocaleDateString('en-US', {
                 month: 'short',
@@ -99,16 +105,13 @@ const ConfessionCard = ({ confession, onCommentClick }) => {
 
       {/* Confession Text */}
       <div className="mb-3">
-        <p
-          className={cn(
-            'text-gray-800 dark:text-gray-200 text-sm sm:text-base',
-            !isExpanded && confession.text.length > 180 && 'line-clamp-3'
-          )}
-        >
-          {confession.text}
+        <p className="text-gray-800 dark:text-gray-200 text-sm sm:text-base whitespace-pre-wrap">
+          {displayedText}
         </p>
-        {confession.text.length > 180 && (
+
+        {shouldTruncate && (
           <button
+            type="button"
             onClick={() => setIsExpanded(!isExpanded)}
             className="text-sm text-primary-500 mt-1 hover:underline"
           >

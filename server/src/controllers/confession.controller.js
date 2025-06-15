@@ -22,7 +22,7 @@ export const createConfession = AsyncHandler(async (req, res) => {
     tags: tags || [],
   });
 
-  newConfession.populate("owner", "Username FullName");
+  await newConfession.populate("owner", "Username FullName");
 
   return res.status(201).json(new ApiResponse(201, "Confession created successfully", newConfession));
 });

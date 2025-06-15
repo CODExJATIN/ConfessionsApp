@@ -97,7 +97,7 @@ const TermsOfServicePage = () => {
             If you have questions about these Terms, contact us at:
           </p>
           <ul className="list-disc list-inside text-gray-600 dark:text-gray-400">
-            <li>Email: <a href="mailto:jatin5140p@gmaqil.com" className="text-primary-600">jatin5140p@gmail.com</a></li>
+            <li>Email: <a href="mailto:hello@codexjatin.me" className="text-primary-600">hello@codexjatin.me</a></li>
           </ul>
         </SectionCard>
       </div>

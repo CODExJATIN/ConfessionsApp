@@ -12,21 +12,45 @@ const phrases = [
   'Typing what they could never say out loud 📝...',
 ];
 
+const delayedPhrases = [
+  "Still typing... this one's extra juicy 👀",
+  "They're overthinking every word 💭...",
+  "Gathering courage... it's not easy to confess 😶‍🌫️",
+  "Trying not to get caught while typing this 😳...",
+  "It’s getting emotional... hang tight 💬",
+  "Confession almost too hot for the server 🔥🔥🔥",
+  "Decrypting extra feelings... please wait 💌",
+  "This one's complicated... like their situationship 😅",
+  "Spilling takes time when it’s real tea ☕️⏳",
+  "They're deciding whether to hit send or not... 🙈"
+];
+
 const ConfessionLoader = () => {
   const [text, setText] = useState(phrases[0]);
+  const [useDelayed, setUseDelayed] = useState(false);
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setUseDelayed(true); // Switch to delayed phrases after 5 seconds
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const activePhrases = useDelayed ? delayedPhrases : phrases;
+
     const interval = setInterval(() => {
       setText(prev => {
-        const index = phrases.indexOf(prev);
-        const nextIndex = (index + 1) % phrases.length;
-        return phrases[nextIndex];
+        const index = activePhrases.indexOf(prev);
+        const nextIndex = (index + 1) % activePhrases.length;
+        return activePhrases[nextIndex];
       });
     }, 1800); // change every 1.8 seconds
 
     return () => clearInterval(interval);
-  }, []);
-
+  }, [useDelayed]);
+  
   return (
     <div className="flex flex-col items-center justify-center h-64 space-y-4 text-center">
       <div className="text-xl md:text-2xl font-semibold text-pink-500 animate-pulse">

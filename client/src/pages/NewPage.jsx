@@ -29,9 +29,7 @@ const NewPage = () => {
       });
   }, []);
   
-  if (loading) {
-    return (<ConfessionLoader />);
-  }
+
 
   return (
     <Layout>
@@ -46,7 +44,10 @@ const NewPage = () => {
           <h1 className="text-2xl font-bold">Latest Confessions</h1>
         </motion.div>
 
-        <ConfessionList confessions={confessions} />
+        {
+          loading? <ConfessionLoader/> : <ConfessionList confessions={confessions} />
+        }
+
       </div>
     </Layout>
   );

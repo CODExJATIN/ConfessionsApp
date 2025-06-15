@@ -21,7 +21,7 @@ const NewConfessionModal = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const user = useUser((state) => state.user);
   
-  const maxCharCount = 280;
+  const maxCharCount = 500;
   const charactersLeft = maxCharCount - confessionText.length;
   
   const handleTagToggle = (tag) => {

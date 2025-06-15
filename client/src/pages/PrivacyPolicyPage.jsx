@@ -25,7 +25,6 @@ const PrivacyPolicyPage = () => {
             When you post anonymously without logging in, we do <strong>not</strong> collect personally identifiable information. However, we may collect:
           </p>
           <ul className="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1 mt-2">
-            <li>Device type and browser type</li>
             <li>Timestamp and selected college</li>
             <li>Content of the anonymous post</li>
           </ul>
@@ -37,7 +36,6 @@ const PrivacyPolicyPage = () => {
           <ul className="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1 mt-2">
             <li>Email address</li>
             <li>Display name or handle</li>
-            <li>Login method (Google, Email, etc.)</li>
             <li>Your posted comments, public confessions, and interactions</li>
           </ul>
         </SectionCard>
@@ -104,7 +102,7 @@ const PrivacyPolicyPage = () => {
             <li>Delete your account anytime</li>
           </ul>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
-            To request access or deletion, email us at <a className="text-primary-600" href="mailto:jatin5140p@gmail.com">jatin5140p@gmail.com</a>
+            To request access or deletion, email us at <a className="text-primary-600" href="mailto:hello@codexjatin.me">hello@codexjatin.me</a>
           </p>
         </SectionCard>
 
@@ -125,7 +123,7 @@ const PrivacyPolicyPage = () => {
             For questions or concerns, contact us:
           </p>
           <ul className="text-gray-600 dark:text-gray-400 list-disc list-inside">
-            <li>Email: <a href="mailto:support@yourapp.com" className="text-primary-600">jatin5140p@gmail.com</a></li>
+            <li>Email: <a href="mailto:support@yourapp.com" className="text-primary-600">hello@codexjatin.me</a></li>
           </ul>
         </SectionCard>
       </div>
