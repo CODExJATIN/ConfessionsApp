@@ -27,6 +27,8 @@ export const createComment = AsyncHandler(async (req, res) => {
   await Confession.findByIdAndUpdate(confessionId, {
     $push: { Comments: comment._id },
   });
+
+  comment.populate("User","Username Email isAdmin")
   
 
   res.status(201).json(new ApiResponse(201, "Comment created", comment));
@@ -35,7 +37,7 @@ export const createComment = AsyncHandler(async (req, res) => {
 // Get comments by confession id
 export const getCommentsByConfession = AsyncHandler(async (req, res) => {
   const { id: confessionId } = req.params;
-  const comments = await Comment.find({ Confession: confessionId }).populate("User", "Username Email");
+  const comments = await Comment.find({ Confession: confessionId }).populate("User", "Username Email isAdmin");
   res.status(200).json(new ApiResponse(200, "Comments fetched", comments));
 });
 

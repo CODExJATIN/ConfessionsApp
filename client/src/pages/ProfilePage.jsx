@@ -123,7 +123,20 @@ const tabs = [
                 </div>
             </div>
             <div className="text-center sm:text-left">
-              <h1 className="text-2xl font-bold mb-1">{user?.fullname}</h1>
+              <div className="flex items-center gap-2 mb-1">
+                <h1 className="text-2xl font-bold">
+                  {user?.fullname}
+                </h1>
+                {user?.isAdmin && (
+                  <img
+                    src="/vip.png"
+                    alt="Admin badge"
+                    className="w-6 h-6 sm:w-7 sm:h-7 object-contain"
+                    title="Admin"
+                  />
+                )}
+              </div>
+
               <p className="text-gray-600 dark:text-gray-400">@{user?.username}</p>
               <p className="text-sm text-gray-500 dark:text-gray-400">{user?.email}</p>
               <p className="text-sm text-primary-600 dark:text-primary-400 mt-1">

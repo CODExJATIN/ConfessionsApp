@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Mail, Lock, User } from 'lucide-react';
 import axios from 'axios';
 import { useUser } from '../store/useUser';
+import { colleges } from '../data/mockData';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -39,7 +40,10 @@ const AuthPage = () => {
           email: data.data.User.Email,
           fullname: data.data.User.FullName,
           id: data.data.User._id,
+          isAdmin: !!data.data.User.isAdmin, 
+          college: data.data.User.college ?? null 
         });
+
         navigate('/');
       } else {
         // Signup with fullname, username, email, and password

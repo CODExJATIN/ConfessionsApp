@@ -30,6 +30,14 @@ let User_Schema = new mongoose.Schema(
     RefreshToken: {
       type: String
     },
+    isAdmin: {
+      type: Boolean,
+      default: false
+    },
+    college: {
+      type: String,
+      enum: ["ldce", "sal", "gu","all"]
+    }
   },
   { timestamps: true }
 );

@@ -66,6 +66,7 @@ const CommentsDrawer = ({
             User: {
               Username: user.username,
               FullName: user.fullname,
+              isAdmin: user.isAdmin
             },
             createdAt: new Date().toISOString(),
           },
@@ -170,9 +171,20 @@ const CommentItem = ({ comment }) => {
       </div>
       <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-3 flex-grow">
         <div className="flex items-center justify-between mb-1">
-          <span className="font-medium text-sm">
+          <div className="flex items-center gap-2">
+            <span className="font-medium text-sm">
               @{comment.User.Username}
-          </span>
+            </span>
+            {comment.User?.isAdmin && (
+              <img
+                src="/vip.png"
+                alt="Admin badge"
+                className="w-4 h-4 sm:w-5 sm:h-5 object-contain"
+                title="Admin"
+              />
+            )}
+          </div>
+
           <span className="text-xs text-gray-500 dark:text-gray-400">
             {new Date(comment.createdAt).toLocaleDateString('en-US', {
               month: 'short',

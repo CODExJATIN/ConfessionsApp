@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '../../utils/cn';
 import { Button } from '../ui/button';
-import { Heart, MessageCircle, Flag, User, School } from 'lucide-react';
+import { Heart, MessageCircle, Flag, User, School, Trash } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { getTagIcon } from '../../data/mockData';
 import { colleges } from '../../data/mockData';
 import { useUser } from '../../store/useUser';
 import axios from 'axios';
+import {toast} from 'react-toastify'
 
-const ConfessionCard = ({ confession, onCommentClick }) => {
+const ConfessionCard = ({ confession, onCommentClick, onDelete }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(confession.Likes?.length || 0);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -59,6 +60,32 @@ const ConfessionCard = ({ confession, onCommentClick }) => {
 
   const handleCommentClick = () => onCommentClick(confession);
 
+  
+  // const handleDelete = async () => {
+  //   const confirmDelete = window.confirm("Are you sure you want to delete this confession?");
+  //   if (!confirmDelete) return;
+
+  //   try {
+  //     const res = await axios.delete(`${import.meta.env.VITE_BASE_URL}/confession-routes/${confession._id}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //       }
+  //     });
+
+  //     // console.log("Confession deleted!!")
+  //     // console.log(res.data);
+
+  //     alert(res.data.message);
+
+  //     window.location.reload();
+      
+      
+  //   } catch (error) {
+  //     console.error("Error deleting confession:", error);
+  //     toast.error(error.response?.data?.message || "Failed to delete confession.");
+  //   }
+  // };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -81,7 +108,20 @@ const ConfessionCard = ({ confession, onCommentClick }) => {
         </div>
         <div className="flex flex-col">
           <div className="flex items-center gap-2 text-sm sm:text-base font-medium text-gray-800 dark:text-gray-200">
-            {confession.owner ? `@${confession.owner.Username}` : 'Anonymous'}
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {confession.owner ? `@${confession.owner.Username}` : 'Anonymous'}
+              </span>
+              {confession.owner?.isAdmin && (
+                <img
+                  src="/vip.png"
+                  alt="Admin badge"
+                  className="w-4 h-4 sm:w-5 sm:h-5 object-contain"
+                  title="Admin"
+                />
+              )}
+            </div>
+
             <time className="text-xs text-gray-500 dark:text-gray-400">
               {new Date(confession.createdAt).toLocaleDateString('en-US', {
                 month: 'short',
@@ -196,6 +236,18 @@ const ConfessionCard = ({ confession, onCommentClick }) => {
         >
           <Flag size={18} />
         </Button>
+
+          {user?.isAdmin && user?.college === college?.id && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onDelete(confession._id)} 
+               className="text-gray-600 dark:text-gray-400 flex-1 sm:flex-none"
+               aria-label="Delete confession"
+            >
+              <Trash size={18} />
+            </Button>
+          )}
       </div>
     </motion.div>
   );

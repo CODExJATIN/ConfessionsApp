@@ -58,7 +58,7 @@ export const getLikesByUser = AsyncHandler(async (req, res) => {
     populate: [
       {
         path:"owner",
-        select: "Username FullName",
+        select: "Username FullName isAdmin",
       },
       {
         path: "Comments",

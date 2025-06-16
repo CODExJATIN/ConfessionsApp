@@ -144,7 +144,7 @@ const CollegePage = () => {
               {error}
             </div>
           ) : sortedConfessions.length > 0 ? (
-            <ConfessionList confessions={sortedConfessions} />
+            <ConfessionList confessions={sortedConfessions} setConfessions={setConfessions}/>
           ) : (
             <div className="text-center py-12 bg-white dark:bg-gray-900 rounded-xl shadow-sm">
               <p className="text-gray-600 dark:text-gray-400">No confessions yet</p>

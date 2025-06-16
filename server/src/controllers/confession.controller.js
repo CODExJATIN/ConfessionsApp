@@ -22,7 +22,7 @@ export const createConfession = AsyncHandler(async (req, res) => {
     tags: tags || [],
   });
 
-  await newConfession.populate("owner", "Username FullName");
+  await newConfession.populate("owner", "Username FullName isAdmin");
 
   return res.status(201).json(new ApiResponse(201, "Confession created successfully", newConfession));
 });
@@ -47,14 +47,14 @@ export const createAnonymousConfession = AsyncHandler(async (req, res) => {
 // 3. Get all confessions with nested population
 export const getAllConfessions = AsyncHandler(async (req, res) => {
   const confessions = await Confession.find()
-    .populate("owner", "Username FullName")
+    .populate("owner", "Username FullName isAdmin")
     .populate({
       path: "Likes",
       populate: { path: "LikedBy", select: "Username FullName" },
     })
     .populate({
       path: "Comments",
-      populate: { path: "User", select: "Username FullName" },
+      populate: { path: "User", select: "Username FullName isAdmin" },
     })
     .sort({ createdAt: -1 });
 
@@ -72,7 +72,7 @@ export const getConfessionById = AsyncHandler(async (req, res) => {
     })
     .populate({
       path: "Comments",
-      populate: { path: "User", select: "Username FullName" },
+      populate: { path: "User", select: "Username FullName isAdmin" },
     });
 
   if (!confession) throw new ApiError(404, "Confession not found");
@@ -83,14 +83,14 @@ export const getConfessionById = AsyncHandler(async (req, res) => {
 export const getConfessionsByUser = AsyncHandler(async (req, res) => {
   const { userId } = req.params;
   const confessions = await Confession.find({ owner: userId })
-    .populate("owner", "Username FullName")
+    .populate("owner", "Username FullName isAdmin")
     .populate({
       path: "Likes",
       populate: { path: "LikedBy", select: "Username FullName" },
     })
     .populate({
       path: "Comments",
-      populate: { path: "User", select: "Username FullName" },
+      populate: { path: "User", select: "Username FullName isAdmin" },
     })
     .sort({ createdAt: -1 });
 
@@ -120,21 +120,27 @@ export const updateConfession = AsyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, "Confession updated successfully", confession));
 });
 
-// 7. Delete confession
+// 7. Delete confession (owner or admin of same college or global admin)
 export const deleteConfession = AsyncHandler(async (req, res) => {
   const { id } = req.params;
-  const userId = req.user?._id;
+  const user = req.user;
 
   const confession = await Confession.findById(id);
   if (!confession) throw new ApiError(404, "Confession not found");
 
-  if (confession.owner.toString() !== userId.toString())
+  const isOwner = confession.owner?.toString() === user?._id?.toString();
+  const isAdminOfSameCollege = user?.isAdmin && user?.college === confession.college;
+  const isGlobalAdmin = user?.isAdmin && user?.college === "all";
+
+  if (!isOwner && !isAdminOfSameCollege && !isGlobalAdmin) {
     throw new ApiError(403, "Not authorized to delete this confession");
+  }
 
   await confession.deleteOne();
 
   res.status(200).json(new ApiResponse(200, "Confession deleted successfully", {}));
 });
+
 
 // 8. Get confessions by collegeName
 export const getConfessionsByCollege = AsyncHandler(async (req, res) => {
@@ -143,16 +149,18 @@ export const getConfessionsByCollege = AsyncHandler(async (req, res) => {
   if (!collegeName) throw new ApiError(400, "College parameter is required");
 
   const confessions = await Confession.find({ college:collegeName })
-    .populate("owner", "Username FullName")
+    .populate("owner", "Username FullName isAdmin")
     .populate({
       path: "Likes",
       populate: { path: "LikedBy", select: "Username FullName" },
     })
     .populate({
       path: "Comments",
-      populate: { path: "User", select: "Username FullName" },
+      populate: { path: "User", select: "Username FullName isAdmin" },
     })
     .sort({ createdAt: -1 });
 
   res.status(200).json(new ApiResponse(200, "College confessions fetched successfully", confessions));
 });
+
+

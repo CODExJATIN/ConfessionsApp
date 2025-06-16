@@ -6,7 +6,9 @@ export const useUser=create((set)=>({
     user:{
         username:"",
         email:"",
-        fullname:""
+        fullname:"",
+        isAdmin:false,
+        college:""
     },
     setUser:(newUser)=>set(()=>({user:newUser}))
 }))
