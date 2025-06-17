@@ -13,7 +13,7 @@ export const colleges: College[] = [
   },
   {
     id: 'sal',
-    name: 'SAL Institute of Technology & Engineering',
+    name: 'SAL Institute',
     logo: 'https://www.admissionwala.in/storage/productimages/seti_home-1.png',
     location: 'Ahmedabad, Gujarat',
     bannerImage: 'https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg',
